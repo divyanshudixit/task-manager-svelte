@@ -1,47 +1,147 @@
-# Svelte + Vite
+# Directus and Svelte Task Management System
 
-This template should help get you started developing with Svelte in Vite.
+## Description
 
-## Recommended IDE Setup
+This project demonstrates how to set up and configure a Directus backend with MySQL, create basic functionalities for user authentication and task management, and integrate a frontend using Svelte and Flowbite. 
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+## Requirements
 
-## Need an official Svelte framework?
+1. **Directus Setup with MySQL**
+   - Install and configure Directus with a MySQL database.
+   - Set up Directus to manage tasks with fields for title, description, status, and due date.
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+2. **User Login**
+   - Implement a user authentication system using Directus.
+   - Ensure users can log in and log out securely.
 
-## Technical considerations
+3. **Task Management**
+   - Create functionalities for adding and deleting tasks.
+   - Ensure task data is correctly saved and removed in the MySQL database via Directus.
 
-**Why use this over SvelteKit?**
+4. **Frontend Integration with Svelte and Flowbite**
+   - Set up a basic Svelte project.
+   - Use Flowbite components to create a user-friendly interface.
+   - Display a task list fetched from the Directus backend.
+   - Include forms for adding and deleting tasks.
+   - Ensure the user interface is responsive and accessible.
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+## Installation
 
-This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+### Directus Setup
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+1. **Install Directus**
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+   Follow the [Directus installation guide](https://docs.directus.io/getting-started/installation/) to install Directus.
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+2. **Configure MySQL**
 
-**Why include `.vscode/extensions.json`?**
+   Ensure you have a MySQL database set up. Configure Directus to use your MySQL database by updating the `.env` file with your database credentials:
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+   ```env
+   DB_CLIENT=mysql
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_DATABASE=your_database_name
+   DB_USER=your_database_user
+   DB_PASSWORD=your_database_password
+   ```
+## Set Up Directus
 
-**Why enable `checkJs` in the JS template?**
+1. **Access the Directus Admin Panel**
 
-It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
+   Open your web browser and navigate to your Directus admin panel. This is typically accessible at `http://localhost:8055` or the URL where you have Directus hosted.
 
-**Why is HMR not preserving my local component state?**
+2. **Create a New Collection for Tasks**
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/sveltejs/svelte-hmr/tree/master/packages/svelte-hmr#preservation-of-local-state).
+   - **Navigate to Collections & Fields**: In the admin panel, go to the sidebar and select `Collections & Fields`.
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+   - **Add a New Collection**: Click the `+ Add Collection` button.
 
-```js
-// store.js
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+   - **Configure Collection Settings**:
+     - **Name**: Enter `Tasks` for the collection name.
+     - **Description**: Optionally, provide a description for the collection.
+
+   - **Add Fields to the Collection**:
+     1. **Title**:
+        - **Field Type**: `Text`
+        - **Field Name**: `title`
+        - **Display Name**: `Title`
+        - **Required**: Yes
+
+     2. **Description**:
+        - **Field Type**: `Text Area`
+        - **Field Name**: `description`
+        - **Display Name**: `Description`
+        - **Required**: No
+
+     3. **Status**:
+        - **Field Type**: `Enumeration`
+        - **Field Name**: `status`
+        - **Display Name**: `Status`
+        - **Options**: 
+          - `pending`
+          - `completed`
+        - **Default Value**: `pending`
+        - **Required**: Yes
+
+     4. **Due Date**:
+        - **Field Type**: `Date`
+        - **Field Name**: `due_date`
+        - **Display Name**: `Due Date`
+        - **Required**: No
+
+   - **Save the Collection**: Once all fields are added, click the `Save Collection` button.
+
+3. **Configure Authentication Settings**
+
+   - **Navigate to Authentication Settings**: In the admin panel, go to `Settings` and then `Authentication`.
+
+   - **Set Up Authentication**:
+     - Ensure that users can log in and log out securely. Configure settings according to your project’s requirements.
+
+   - **Create User Roles**: Optionally, set up roles and permissions for different types of users to manage access to the tasks.
+
+4. **Test the Setup**
+
+   - **Add Sample Tasks**: Go to the `Tasks` collection and add a few sample tasks to ensure everything is working correctly.
+
+   - **Verify User Authentication**: Test the login and logout functionalities to ensure users can authenticate properly.
+
+## Frontend Setup
+
+### Download and Open the Repository
+
+To get started, download the repository and open it in your preferred code editor:
+
+1. Download the project as a ZIP file.
+2. Extract the ZIP file.
+3. Open the extracted project directory in your preferred code editor.
+
+### Install Dependencies
+
+Navigate to the Svelte project directory and install the required dependencies:
+
+```bash
+npm install
 ```
+Create a .env file in your Svelte project root and add your Directus API URL:
+```bash
+VITE_DIRECTUS_API_URL=http://localhost:8055
+```
+
+### Run the Project
+Start the development server:
+```bash
+npm run dev
+```
+The project should now be running at http://localhost:3000.
+
+## Usage
+
+### Login
+
+Users can log in using the login form provided in the Svelte frontend. The authentication is handled by Directus.
+
+### Task Management
+
+Users can add, view, and delete tasks. Tasks are managed through Directus and displayed in the Svelte frontend.
